@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.thought_hub">
+    package="com.heshan.thought_hub">
    <application
         android:label="thought_hub"
         android:icon="@mipmap/ic_launcher">

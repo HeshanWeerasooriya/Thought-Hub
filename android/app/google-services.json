@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "6660777228",
+    "project_id": "thought-hub",
+    "storage_bucket": "thought-hub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6660777228:android:494cf7b29c49323a39d529",
+        "android_client_info": {
+          "package_name": "com.heshan.thought_hub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "6660777228-pe62vqofm58thish8f4a9hdd8h7ksib2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi2JLVZc2hVesCG2BZYWJ0OpDXCfh9u40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "6660777228-pe62vqofm58thish8f4a9hdd8h7ksib2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
