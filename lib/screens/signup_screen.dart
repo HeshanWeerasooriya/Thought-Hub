@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:thought_hub/constants.dart';
@@ -30,6 +31,13 @@ class _SignupScreenState extends State<SignupScreen> {
       email: _userEmail,
       password: _userPassword,
     );
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCredential.user?.uid)
+        .set({
+      'username': _userName,
+      'email:': _userEmail,
+    });
   }
 
   @override
