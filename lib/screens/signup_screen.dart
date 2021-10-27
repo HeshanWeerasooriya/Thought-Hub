@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:thought_hub/constants.dart';
 import 'package:thought_hub/screens/signin_screen.dart';
@@ -10,21 +11,25 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final _auth = FirebaseAuth.instance;
+  late UserCredential userCredential;
+
   final _formKey = GlobalKey<FormState>();
   String _userName = '';
   String _userEmail = '';
   String _userPassword = '';
 
-  void _trySubmit() {
+  Future<void> _trySubmit() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
 
     if (isValid) {
       _formKey.currentState!.save();
-      print(_userEmail);
-      print(_userName);
-      print(_userPassword);
     }
+    userCredential = await _auth.createUserWithEmailAndPassword(
+      email: _userEmail,
+      password: _userPassword,
+    );
   }
 
   @override
