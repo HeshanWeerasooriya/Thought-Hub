@@ -56,7 +56,7 @@ class _SignupScreenState extends State<SignupScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Please pick an image2'),
+            content: Text('Please pick an image'),
           ),
         );
       }

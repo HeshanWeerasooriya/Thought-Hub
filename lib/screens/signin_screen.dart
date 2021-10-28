@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:thought_hub/screens/signup_screen.dart';
 
@@ -11,18 +12,40 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
+  final _auth = FirebaseAuth.instance;
+  late UserCredential userCredential;
+
   final _formKey = GlobalKey<FormState>();
   String _userEmail = '';
   String _userPassword = '';
 
-  void _trySubmit() {
+  Future<void> _signin() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
 
     if (isValid) {
       _formKey.currentState!.save();
-      print(_userEmail);
-      print(_userPassword);
+    }
+
+    try {
+      userCredential = await _auth.signInWithEmailAndPassword(
+        email: _userEmail.trim(),
+        password: _userPassword.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No user found for that email.'),
+          ),
+        );
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Wrong password provided for that user.'),
+          ),
+        );
+      }
     }
   }
 
@@ -79,7 +102,7 @@ class _SigninScreenState extends State<SigninScreen> {
                             height: defaultPadding * 2,
                           ),
                           ElevatedButton(
-                            onPressed: _trySubmit,
+                            onPressed: _signin,
                             child: Text('Sign in'),
                           ),
                         ],
