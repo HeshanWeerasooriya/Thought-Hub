@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:thought_hub/constants.dart';
 import 'package:thought_hub/screens/signin_screen.dart';
 
@@ -19,6 +24,20 @@ class _SignupScreenState extends State<SignupScreen> {
   String _userName = '';
   String _userEmail = '';
   String _userPassword = '';
+  XFile? image;
+
+  final ImagePicker picker = ImagePicker();
+
+  void _pickImage() async {
+    final XFile? pickedImageFile = await picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+      maxWidth: 150,
+    );
+    setState(() {
+      image = pickedImageFile!;
+    });
+  }
 
   Future<void> _trySubmit() async {
     final isValid = _formKey.currentState!.validate();
@@ -27,17 +46,53 @@ class _SignupScreenState extends State<SignupScreen> {
     if (isValid) {
       _formKey.currentState!.save();
     }
-    userCredential = await _auth.createUserWithEmailAndPassword(
-      email: _userEmail,
-      password: _userPassword,
-    );
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userCredential.user?.uid)
-        .set({
-      'username': _userName,
-      'email:': _userEmail,
-    });
+
+    try {
+      if (image != null) {
+        userCredential = await _auth.createUserWithEmailAndPassword(
+          email: _userEmail,
+          password: _userPassword,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please pick an image2'),
+          ),
+        );
+      }
+
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('user_image')
+          .child(userCredential.user!.uid + '.jpg');
+
+      await ref.putFile(File(image!.path));
+
+      final url = await ref.getDownloadURL();
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .set({
+        'username': _userName.trim(),
+        'email:': _userEmail.trim(),
+        'image_url': url,
+      });
+    } on PlatformException catch (error) {
+      var message = 'An error occurred, please check your credentials!';
+
+      if (error.message != null) {
+        message = error.message!;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+        ),
+      );
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -56,13 +111,27 @@ class _SignupScreenState extends State<SignupScreen> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          CircleAvatar(
-                            radius: 50,
-                          ),
+                          image == null
+                              ? Container(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.grey,
+                                  ),
+                                )
+                              : ClipOval(
+                                  child: Image.file(
+                                    File(image!.path),
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                           TextButton.icon(
-                            icon: Icon(Icons.image),
-                            label: Text('Add Image'),
-                            onPressed: () {},
+                            icon: const Icon(Icons.image),
+                            label: const Text('Add Image'),
+                            onPressed: _pickImage,
                           ),
                           const SizedBox(
                             height: defaultPadding * 2,
@@ -122,7 +191,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           ElevatedButton(
                             onPressed: _trySubmit,
-                            child: Text('Sign up'),
+                            child: const Text('Sign up'),
                           ),
                         ],
                       ),
@@ -141,7 +210,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       );
                     },
-                    child: Text('I already have an account'),
+                    child: const Text('I already have an account'),
                   ),
                 ],
               ),
