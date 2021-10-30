@@ -55,7 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
           password: _userPassword,
         );
 
-        await Navigator.push(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ThoughtScreen()),
         );
