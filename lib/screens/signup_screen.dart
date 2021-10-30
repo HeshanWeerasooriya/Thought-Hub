@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thought_hub/constants.dart';
 import 'package:thought_hub/screens/signin_screen.dart';
+import 'package:thought_hub/screens/thought_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -52,6 +53,11 @@ class _SignupScreenState extends State<SignupScreen> {
         userCredential = await _auth.createUserWithEmailAndPassword(
           email: _userEmail,
           password: _userPassword,
+        );
+
+        await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ThoughtScreen()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

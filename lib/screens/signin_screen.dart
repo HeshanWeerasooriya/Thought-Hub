@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:thought_hub/screens/signup_screen.dart';
+import 'package:thought_hub/screens/thought_screen.dart';
 
 import '../constants.dart';
 
@@ -31,6 +32,11 @@ class _SigninScreenState extends State<SigninScreen> {
       userCredential = await _auth.signInWithEmailAndPassword(
         email: _userEmail.trim(),
         password: _userPassword.trim(),
+      );
+
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ThoughtScreen()),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
