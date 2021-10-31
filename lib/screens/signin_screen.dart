@@ -34,7 +34,7 @@ class _SigninScreenState extends State<SigninScreen> {
         password: _userPassword.trim(),
       );
 
-      await Navigator.push(
+      await Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => ThoughtScreen()),
       );
@@ -70,6 +70,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     child: Form(
                       key: _formKey,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           TextFormField(
                             validator: (value) {
@@ -109,7 +110,10 @@ class _SigninScreenState extends State<SigninScreen> {
                           ),
                           ElevatedButton(
                             onPressed: _signin,
-                            child: Text('Sign in'),
+                            child: Text(
+                              'Sign in',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),

@@ -8,13 +8,15 @@ final lightThemeData = ThemeData(
         secondary: secondaryColorLightTheme,
         primary: primaryColor,
       ),
+  textTheme: GoogleFonts.openSansTextTheme(ThemeData.light().textTheme)
+      .copyWith(bodyText2: const TextStyle(color: textColorLightTheme)),
   appBarTheme: const AppBarTheme(backgroundColor: primaryColor),
   inputDecorationTheme: const InputDecorationTheme(
     border: textFieldOutlineInputBorderLightTheme,
     enabledBorder: textFieldOutlineInputBorderLightTheme,
     focusedBorder: textFieldOutlineInputBorderLightTheme,
   ),
-  textSelectionTheme: TextSelectionThemeData(
+  textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.amber,
   ),
   elevatedButtonTheme: elevatedButtonThemeData,
@@ -26,14 +28,16 @@ final darkThemeData = ThemeData(
         primary: primaryColor,
         secondary: secondaryColorDarkTheme,
       ),
+  textTheme: GoogleFonts.openSansTextTheme(ThemeData.dark().textTheme)
+      .copyWith(bodyText2: const TextStyle(color: textColorDarkTheme)),
   appBarTheme: const AppBarTheme(backgroundColor: primaryColor),
   inputDecorationTheme: InputDecorationTheme(
     border: textFieldOutlineInputBorderDarkTheme,
     enabledBorder: textFieldOutlineInputBorderDarkTheme,
     focusedBorder: textFieldOutlineInputBorderDarkTheme,
   ),
-  textSelectionTheme: TextSelectionThemeData(
-    cursorColor: Colors.amber,
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: textColorDarkTheme,
   ),
   elevatedButtonTheme: elevatedButtonThemeData,
 );
@@ -58,7 +62,7 @@ final elevatedButtonThemeData = ElevatedButtonThemeData(
     padding: const EdgeInsets.all(defaultPadding),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
-        Radius.circular(defaultBorderRadius),
+        Radius.circular(defaultBorderRadius * 5),
       ),
     ),
   ),

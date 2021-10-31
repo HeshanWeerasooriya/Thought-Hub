@@ -14,13 +14,29 @@ class _ThoughtScreenState extends State<ThoughtScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewThought(),
+                ),
+              );
+            },
+            icon: Icon(Icons.add),
+          )
+        ],
+      ),
       body: SafeArea(
           child: Column(
         children: [
           Expanded(
             child: Thoughts(),
           ),
-          NewThought(),
+          // NewThought(),
         ],
       )),
     );

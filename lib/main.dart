@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thought_hub/screens/signup_screen.dart';
+import 'package:thought_hub/screens/thought_screen.dart';
 import 'package:thought_hub/theme.dart';
 import 'package:change_app_package_name/change_app_package_name.dart';
 import 'package:firebase_core/firebase_core.dart';

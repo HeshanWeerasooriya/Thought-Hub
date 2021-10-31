@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thought_hub/constants.dart';
@@ -55,9 +57,11 @@ class _SignupScreenState extends State<SignupScreen> {
           password: _userPassword,
         );
 
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ThoughtScreen()),
+          MaterialPageRoute(
+            builder: (context) => ThoughtScreen(),
+          ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -116,6 +120,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: Form(
                       key: _formKey,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           image == null
                               ? Container(
@@ -136,7 +141,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                           TextButton.icon(
                             icon: const Icon(Icons.image),
-                            label: const Text('Add Image'),
+                            label: const Text(
+                              'Add Image',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             onPressed: _pickImage,
                           ),
                           const SizedBox(
@@ -197,7 +205,12 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           ElevatedButton(
                             onPressed: _trySubmit,
-                            child: const Text('Sign up'),
+                            child: const Text(
+                              'Sign up',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ],
                       ),

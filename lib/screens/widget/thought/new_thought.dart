@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:thought_hub/constants.dart';
+import 'package:thought_hub/screens/thought_screen.dart';
 
 class NewThought extends StatefulWidget {
   const NewThought({Key? key}) : super(key: key);
@@ -28,17 +30,25 @@ class _NewThoughtState extends State<NewThought> {
       'userImage': userData['image_url']
     });
     _controller.clear();
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => ThoughtScreen(),
+    //   ),
+    // );
+
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 8),
-      padding: EdgeInsets.all(8),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(defaultPadding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
               controller: _controller,
               decoration: InputDecoration(labelText: 'Add a thought...'),
               onChanged: (value) {
@@ -47,12 +57,12 @@ class _NewThoughtState extends State<NewThought> {
                 });
               },
             ),
-          ),
-          IconButton(
-            icon: Icon(Icons.send),
-            onPressed: _enteredThought.trim().isEmpty ? null : _sendThought,
-          )
-        ],
+            IconButton(
+              icon: Icon(Icons.send),
+              onPressed: _enteredThought.trim().isEmpty ? null : _sendThought,
+            )
+          ],
+        ),
       ),
     );
   }
