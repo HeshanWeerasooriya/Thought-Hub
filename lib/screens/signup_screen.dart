@@ -23,6 +23,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final _auth = FirebaseAuth.instance;
   late UserCredential userCredential;
 
+  bool isLoading = false;
+
   final _formKey = GlobalKey<FormState>();
   String _userName = '';
   String _userEmail = '';
@@ -51,6 +53,10 @@ class _SignupScreenState extends State<SignupScreen> {
     }
 
     try {
+      setState(() {
+        isLoading = true;
+      });
+
       if (image != null) {
         userCredential = await _auth.createUserWithEmailAndPassword(
           email: _userEmail,
@@ -100,6 +106,10 @@ class _SignupScreenState extends State<SignupScreen> {
           content: Text(message),
         ),
       );
+
+      setState(() {
+        isLoading = false;
+      });
     } catch (error) {
       print(error);
     }
@@ -131,12 +141,15 @@ class _SignupScreenState extends State<SignupScreen> {
                                     color: Colors.grey,
                                   ),
                                 )
-                              : ClipOval(
-                                  child: Image.file(
-                                    File(image!.path),
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
+                              : CircleAvatar(
+                                  radius: 50,
+                                  child: ClipOval(
+                                    child: Image.file(
+                                      File(image!.path),
+                                      fit: BoxFit.cover,
+                                      width: 100,
+                                      height: 100,
+                                    ),
                                   ),
                                 ),
                           TextButton.icon(
@@ -167,6 +180,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           const SizedBox(
                             height: defaultPadding,
                           ),
+                          if (isLoading) const CircularProgressIndicator(),
                           TextFormField(
                             validator: (value) {
                               if (value!.isEmpty || !value.contains('@')) {
