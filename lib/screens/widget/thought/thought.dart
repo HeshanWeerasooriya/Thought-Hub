@@ -9,7 +9,7 @@ class Thoughts extends StatelessWidget {
       .collection('thoughts')
       .orderBy(
         'createAt',
-        descending: false,
+        descending: true,
       )
       .snapshots();
 
@@ -26,7 +26,6 @@ class Thoughts extends StatelessWidget {
           return Text("Loading");
         }
         return ListView(
-          reverse: true,
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;

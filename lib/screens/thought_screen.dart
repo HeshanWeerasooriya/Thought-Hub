@@ -15,6 +15,7 @@ class _ThoughtScreenState extends State<ThoughtScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Thought Hub'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(

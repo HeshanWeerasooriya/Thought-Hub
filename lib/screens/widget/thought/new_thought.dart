@@ -16,28 +16,24 @@ class _NewThoughtState extends State<NewThought> {
   final _controller = TextEditingController();
 
   void _sendThought() async {
-    FocusScope.of(context).unfocus();
-    final user = FirebaseAuth.instance.currentUser;
-    final userData = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user?.uid)
-        .get();
-    FirebaseFirestore.instance.collection('thoughts').add({
-      'thought': _enteredThought,
-      'createAt': Timestamp.now(),
-      'userId': user!.uid,
-      'username': userData['username'],
-      'userImage': userData['image_url']
-    });
-    _controller.clear();
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => ThoughtScreen(),
-    //   ),
-    // );
+    if (_enteredThought.trim().isNotEmpty) {
+      FocusScope.of(context).unfocus();
+      final user = FirebaseAuth.instance.currentUser;
+      final userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user?.uid)
+          .get();
+      FirebaseFirestore.instance.collection('thoughts').add({
+        'thought': _enteredThought,
+        'createAt': Timestamp.now(),
+        'userId': user!.uid,
+        'username': userData['username'],
+        'userImage': userData['image_url']
+      });
+      _controller.clear();
 
-    Navigator.pop(context);
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -46,6 +42,7 @@ class _NewThoughtState extends State<NewThought> {
       body: Padding(
         padding: const EdgeInsets.all(defaultPadding),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
@@ -57,10 +54,16 @@ class _NewThoughtState extends State<NewThought> {
                 });
               },
             ),
-            IconButton(
-              icon: Icon(Icons.send),
-              onPressed: _enteredThought.trim().isEmpty ? null : _sendThought,
-            )
+            const SizedBox(
+              height: defaultPadding * 2,
+            ),
+            ElevatedButton(
+              onPressed: _sendThought,
+              child: const Text(
+                'Save',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
           ],
         ),
       ),
