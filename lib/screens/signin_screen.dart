@@ -28,13 +28,12 @@ class _SigninScreenState extends State<SigninScreen> {
 
     if (isValid) {
       _formKey.currentState!.save();
-    }
-
-    try {
       setState(() {
         isLoading = true;
       });
+    }
 
+    try {
       userCredential = await _auth.signInWithEmailAndPassword(
         email: _userEmail.trim(),
         password: _userPassword.trim(),

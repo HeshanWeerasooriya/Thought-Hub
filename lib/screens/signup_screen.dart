@@ -50,13 +50,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (isValid) {
       _formKey.currentState!.save();
-    }
-
-    try {
       setState(() {
         isLoading = true;
       });
+    }
 
+    try {
       if (image != null) {
         userCredential = await _auth.createUserWithEmailAndPassword(
           email: _userEmail,
