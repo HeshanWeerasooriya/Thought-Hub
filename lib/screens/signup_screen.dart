@@ -130,7 +130,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: Form(
                       key: _formKey,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           image == null
                               ? Container(
@@ -217,14 +216,19 @@ class _SignupScreenState extends State<SignupScreen> {
                           const SizedBox(
                             height: defaultPadding * 2,
                           ),
-                          ElevatedButton(
-                            onPressed: _trySubmit,
-                            child: const Text(
-                              'Sign up',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              ElevatedButton(
+                                onPressed: _trySubmit,
+                                child: const Text(
+                                  'Sign up',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),

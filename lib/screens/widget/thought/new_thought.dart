@@ -14,9 +14,13 @@ class NewThought extends StatefulWidget {
 class _NewThoughtState extends State<NewThought> {
   var _enteredThought = '';
   final _controller = TextEditingController();
+  bool isLoading = false;
 
   void _sendThought() async {
     if (_enteredThought.trim().isNotEmpty) {
+      setState(() {
+        isLoading = true;
+      });
       FocusScope.of(context).unfocus();
       final user = FirebaseAuth.instance.currentUser;
       final userData = await FirebaseFirestore.instance
@@ -31,6 +35,10 @@ class _NewThoughtState extends State<NewThought> {
         'userImage': userData['image_url']
       });
       _controller.clear();
+
+      setState(() {
+        isLoading = false;
+      });
 
       Navigator.pop(context);
     }
@@ -57,6 +65,7 @@ class _NewThoughtState extends State<NewThought> {
             const SizedBox(
               height: defaultPadding * 2,
             ),
+            if (isLoading) Center(child: const CircularProgressIndicator()),
             ElevatedButton(
               onPressed: _sendThought,
               child: const Text(

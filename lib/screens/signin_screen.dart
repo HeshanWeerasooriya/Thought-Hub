@@ -16,6 +16,8 @@ class _SigninScreenState extends State<SigninScreen> {
   final _auth = FirebaseAuth.instance;
   late UserCredential userCredential;
 
+  bool isLoading = false;
+
   final _formKey = GlobalKey<FormState>();
   String _userEmail = '';
   String _userPassword = '';
@@ -29,10 +31,18 @@ class _SigninScreenState extends State<SigninScreen> {
     }
 
     try {
+      setState(() {
+        isLoading = true;
+      });
+
       userCredential = await _auth.signInWithEmailAndPassword(
         email: _userEmail.trim(),
         password: _userPassword.trim(),
       );
+
+      setState(() {
+        isLoading = false;
+      });
 
       await Navigator.pushReplacement(
         context,
@@ -70,7 +80,6 @@ class _SigninScreenState extends State<SigninScreen> {
                     child: Form(
                       key: _formKey,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           TextFormField(
                             validator: (value) {
@@ -90,6 +99,7 @@ class _SigninScreenState extends State<SigninScreen> {
                           const SizedBox(
                             height: defaultPadding,
                           ),
+                          if (isLoading) const CircularProgressIndicator(),
                           TextFormField(
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -108,12 +118,17 @@ class _SigninScreenState extends State<SigninScreen> {
                           const SizedBox(
                             height: defaultPadding * 2,
                           ),
-                          ElevatedButton(
-                            onPressed: _signin,
-                            child: Text(
-                              'Sign in',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              ElevatedButton(
+                                onPressed: _signin,
+                                child: Text(
+                                  'Sign in',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
